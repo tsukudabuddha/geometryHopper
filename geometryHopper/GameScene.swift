@@ -9,13 +9,10 @@
 import SpriteKit
 import GameplayKit
 
-enum ScreenSide {
-    case bottom, right, top, left
-}
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    private var player: SKShapeNode!
+    private var player: Player!
+    private var wallTimer: Timer!
     
     override func didMove(to view: SKView) {
         setupScence()
@@ -30,21 +27,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func playerMovement() {
-        // Bottom
-        player.physicsBody?.applyForce(CGVector(dx: 0, dy: -9.8))
-        // Right
-        player.physicsBody?.applyForce(CGVector(dx: 9.8, dy: 0))
-        // Top
-        player.physicsBody?.applyForce(CGVector(dx: 0, dy: 9.8))
-        // Left
-        player.physicsBody?.applyForce(CGVector(dx: -9.8, dy: 0))
+        let interval: CGFloat = 3.8
+        let dy = (self.frame.maxY - player.frame.width) / interval / 60 // 60 fps
+        let dx = (self.frame.maxX - player.frame.width) / interval / 60
+        
+        switch player.orientation {
+        case .bottom:
+            player.position.x += dx
+            player.physicsBody?.applyForce(CGVector(dx: 0, dy: -9.8))
+        case .right:
+            player.position.y += dy
+            player.physicsBody?.applyForce(CGVector(dx: 9.8, dy: 0))
+        case .top:
+            player.position.x -= dx
+            player.physicsBody?.applyForce(CGVector(dx: 0, dy: 9.8))
+        case .left:
+            player.position.y -= dy
+            player.physicsBody?.applyForce(CGVector(dx: -9.8, dy: 0))
+        }
+        
     }
     
     func setupScence() {
         
         /* Setup Player */
-        player = SKShapeNode(circleOfRadius: 20)
+        player = Player()
         player.position = CGPoint(x: 20, y: 10)
+        addChild(player)
         
         /* Set up the physicsBody of the scene */
         physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
@@ -54,5 +63,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody?.restitution = 0.15
         physicsBody?.friction = 0
         physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVector.zero
+        
+        /* Setup Timer to change 'gravity' */
+        wallTimer = Timer.scheduledTimer(timeInterval: 3.8, target: self, selector: #selector(changeWalls), userInfo: nil, repeats: true)
+    }
+    
+    @objc func changeWalls() {
+        switch player.orientation {
+        case .bottom:
+            player.orientation = .right
+        case .right:
+            player.orientation = .top
+        case .top:
+            player.orientation = .left
+        case .left:
+            player.orientation = .bottom
+        }
     }
 }
