@@ -26,46 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        player.removeAction(forKey: "jumpSequence")
-//        var dVector = CGVector.zero
-//        var downVector = CGVector.zero
-//        let forceValue = 125
-//
-//        switch player.orientation {
-//        case .bottom:
-//            dVector = CGVector(dx: 0, dy: forceValue)
-//            downVector = CGVector(dx: 0, dy: -1 * player.frame.minY)
-//        case .right:
-//            dVector = CGVector(dx: forceValue * -1, dy: 0)
-//            downVector = CGVector(dx: -1 * player.frame.maxX, dy: 0)
-//        case .top:
-//            dVector = CGVector(dx: 0, dy: forceValue * -1)
-//            downVector = CGVector(dx: 0, dy: player.frame.maxY)
-//        case .left:
-//            dVector = CGVector(dx: forceValue, dy: 0)
-//            downVector = CGVector(dx: player.frame.minX, dy: 0)
-//        }
-//        let jumpAction = SKAction.move(by: dVector, duration: 0.35)
-//        jumpAction.timingMode = SKActionTimingMode.easeOut
-//        let down = SKAction.run {
-//            switch self.player.orientation {
-//            case .bottom:
-//                downVector = CGVector(dx: 0, dy: self.frame.minY - self.player.frame.minY)
-//            case .right:
-//                downVector = CGVector(dx:  self.frame.maxX - self.player.frame.maxX, dy: 0)
-//            case .top:
-//                downVector = CGVector(dx: 0, dy: self.frame.maxY - self.player.frame.maxY)
-//            case .left:
-//                downVector = CGVector(dx: self.frame.minX - self.player.frame.minX, dy: 0)
-//            }
-//            let down = SKAction.move(by: downVector, duration: 0.35)
-//            down.timingMode = .easeIn
-//            self.player.run(down)
-//        }
-//
-//        down.timingMode = .easeIn
-//        let sequence = SKAction.sequence([jumpAction, down])
-//        player.run(sequence, withKey: "jumpSequence")
+        
         let force: CGFloat = 1000000
         var impulse = CGVector.zero
         
